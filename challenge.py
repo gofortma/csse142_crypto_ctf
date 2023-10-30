@@ -20,12 +20,14 @@ def morse_code(text):
     return morse_code
 
 # Generate a random 16-byte AES key
-key = os.urandom(16)
+key = b"\x6b\x65\x79\x6b\x65\x79\x6b\x65\x79\x6b\x65\x79\x6b\x65\x79\x6b"
+#print(key)
 cipher = AES.new(key, AES.MODE_CBC)
-flag = 'rhit{this_is_the_flag}'
+flag = 'not_the_real_flag'
+
 
 # Take user input
-user_input = input("Hey! I can help you encript thing! What do you want encripted: ")
+user_input = input("Hey! I can help you encrypt thing! What do you want encrypted: ")
 
 # Pad the user input to the block size (16 bytes for AES)
 padded_user_input = pad(user_input.encode('utf-8'), 16)
@@ -36,14 +38,18 @@ ciphertext = cipher.encrypt(padded_user_input)
 cipherflag = cipher.encrypt(padded_flag)
 
 # Convert the ciphertext to Morse code
-morse_text = morse_code(base64.b64encode(ciphertext).decode('utf-8'))
-morse_flag = morse_code(base64.b64encode(cipherflag).decode('utf-8'))
+morse_text = morse_code(base64.b32encode(ciphertext).decode('utf-8'))
+morse_flag = morse_code(base64.b32encode(cipherflag).decode('utf-8'))
+morse_key = morse_code(base64.b32encode(key).decode('utf-8'))
+#print(base64.b32encode(key))
+#print(base64.b32encode(key).decode('utf-8'))
 
 #print("AES Key:", key)
-#print("Cypertext:", base64.b64encode(ciphertext).decode('utf-8'))
-#print("Cyperflag:", base64.b64encode(cipherflag).decode('utf-8'))
+#print("Cypertext:", base64.b32encode(ciphertext).decode('utf-8'))
+#print("Cyperflag:", base64.b32encode(cipherflag).decode('utf-8'))
 print("Here you go:", morse_text)
 print("Oh and can you figure out what this is for me:", morse_flag)
+print("Hint:", morse_key)
 
 user_input2 = input("Do you know what the flag is: ")
 if user_input2 == flag:
